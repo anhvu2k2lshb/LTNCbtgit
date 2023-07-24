@@ -51,9 +51,11 @@ vector<Position> Snake::getPositions() const
 ***/
 void Snake::growAtFront(Position newPosition)
 {
-    // head of snake grow at new position
-	
-    /* YOUR CODE HERE */
+    // Tạo một đốt mới với vị trí newPosition
+    body.push_front(newPosition);
+
+    // Cập nhật lại đầu của rắn
+    head = body.begin();
 }
 
 
@@ -83,18 +85,24 @@ void Snake::slideTo(Position newPosition)
 {
 	if (tail->next == nullptr) { 
         // position is assigned by new position.
-		/* YOUR CODE HERE */
+		head->position = newPosition;
 	}
 	else {
 		SnakeNode *oldTailNode = tail;
 		//cut the old tail off the snake
-        /* YOUR CODE HERE */
+        tail = tail->next;
+        tail->prev = nullptr;
+        oldTailNode->next = nullptr;
 		
 		// move it to the head of the snake
         /* YOUR CODE HERE */
+		oldTailNode->position = newPosition;
+        	oldTailNode->next = head;
+        	head->prev = oldTailNode;
 		head = oldTailNode;
 	}
 }
+
 
 /*** 
  * PLEASE UPDATE THIS METHOD
@@ -110,7 +118,17 @@ void Snake::slideTo(Position newPosition)
 ***/
 void Snake::eatCherry()
 {
-	/* YOUR CODE HERE */
+    if (head == nullptr) {
+        // Nếu rắn chưa có đốt nào, ta tạo một đốt mới
+        head = new SnakeNode(cherryPosition);
+        tail = head;
+    } else {
+        // Nếu rắn đã có các đốt, ta thêm một đốt mới vào đuôi của rắn
+        SnakeNode *newTail = new SnakeNode(cherryPosition);
+        tail->next = newTail;
+        newTail->prev = tail;
+        tail = newTail;
+    }
 }
 
 /*** 
