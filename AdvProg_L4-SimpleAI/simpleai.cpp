@@ -108,9 +108,11 @@ string getWordMask(char nextChar)
 
 bool isCorrectChar(char ch, const string& mask)
 {
-    bool answer;
-    //Write your code here
-    return answer;
+   for (int i = 0; i < mask.size(); i++) {
+        if (mask[i] == ch) {
+            return true;
+        }
+    }
 }
 
 /***
@@ -123,9 +125,12 @@ bool isCorrectChar(char ch, const string& mask)
 ***/
 bool isWholeWord(const string& mask)
 {
-     bool answer;
-    //Write your code here
-    return answer;
+     for (int i = 0; i < mask.size(); i++) {
+        if (!isalpha(mask[i])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /***
@@ -161,7 +166,25 @@ bool wordConformToMask(const string& word, const string& mask, char ch)
 ***/
 vector<string> filterWordsByMask(const vector<string>& words, const string& mask, char ch)
 {
-    vector<string> answer;
-    //Write your code here
-    return answer;
+    vector<string> filteredWords;
+    for (const string& word : words)
+    {
+        if (word.length() == mask.length())
+        {
+            bool matchesMask = true;
+            for (size_t i = 0; i < word.length(); ++i)
+            {
+                if (mask[i] != '_' && mask[i] != word[i])
+                {
+                    matchesMask = false;
+                    break;
+                }
+            }
+            if (matchesMask && word.find(ch) != string::npos)
+            {
+                filteredWords.push_back(word);
+            }
+        }
+    }
+    return filteredWords;
 }
